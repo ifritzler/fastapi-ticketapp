@@ -14,9 +14,11 @@ start = "app.main:start"
 [tool.poetry.dependencies]
 python = "^3.10"
 fastapi = {extras = ["all"], version = "^0.78.0"}
+sqlmodel = "^0.0.6"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
+alembic = "^1.8.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
