@@ -1,19 +1,9 @@
 """ Modelos para la base de datos de usuario """
-from enum import Enum
 from typing import Optional
 from pydantic import BaseModel
 from sqlmodel import Field, SQLModel, UniqueConstraint
 
-
-class Campania(str, Enum):
-    """Lista de campañas a la que un usuario puede ser asignado"""
-
-    REAGENDAS = "reagendas"
-    COMERCIAL_LLAMADO = "pendiente_comercial"
-    COMERCIAL_ANULAR = "pendiente_anular"
-    COMERCIAL_BOCAS = "bocas_adicionales"
-    EJECUTADAS = "ejecutadas"
-    ANULAR_SIN_LLAMAR = "anular_sin_llamar"
+from app.models._campania import Campania
 
 
 class User(SQLModel, table=True):
