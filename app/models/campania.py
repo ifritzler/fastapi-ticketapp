@@ -1,3 +1,7 @@
+"""
+Esta clase encapsula los tipos de campania existentes y la clase Campania que es
+la tabla de la base de datos referida al tipo de gestion que realiza el gestor
+"""
 from enum import Enum
 from typing import List, Optional
 

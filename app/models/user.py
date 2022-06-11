@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 from sqlmodel import Field, SQLModel, UniqueConstraint, Relationship
 
-from app.models._campania import CampaniaEnum, Campania
+from app.models.campania import CampaniaEnum, Campania
 
 
 class User(SQLModel, table=True):
