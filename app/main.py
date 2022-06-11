@@ -7,9 +7,11 @@ from sqlmodel import SQLModel
 from app.db.db import engine
 
 from app.endpoints.user import router as user_router
+from app.endpoints.campania import router as campaign_router
 
 app = FastAPI()
 app.include_router(user_router)
+app.include_router(campaign_router)
 
 
 def create_db_and_tables():

@@ -13,6 +13,6 @@ router = APIRouter(
 
 
 @router.get("/", response_model=List[ResponseUser])
-def root():
+def get_all_users():
     """Root Endpoint"""
     return user.get_all()
