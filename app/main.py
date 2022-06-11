@@ -1,20 +1,22 @@
 """
     Hola esta es una descripcion del modulo sin empezar :)
 """
+from typing import List
 import uvicorn
 from fastapi import FastAPI
 from sqlmodel import SQLModel
 from app.db.db import engine
 
-from app.models.user import User
+from app.models.user import ResponseUser, User
+from app.repositories.user import get_all_users
 
 app = FastAPI()
 
 
-@app.get("/")
+@app.get("/users", response_model=List[ResponseUser])
 def root():
     """Root Endpoint"""
-    return {"message": "Hello World"}
+    return get_all_users()
 
 
 def create_db_and_tables():
