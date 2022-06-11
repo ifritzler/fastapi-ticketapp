@@ -1,14 +1,9 @@
 """Campaign repository"""
 from typing import List
-from fastapi import HTTPException
 from sqlmodel import Session, select
 
 from app.db.db import engine
 from app.models.campania import Campania
-
-
-class ExistInDbError(HTTPException):
-    """Este error ocurre cuando no se puede insertar un dato por existir en la misma previamente"""
 
 
 def get_all() -> List[Campania]:
@@ -27,19 +22,20 @@ def create(campania: Campania) -> Campania:
         # if result:
         #    raise ExistInDbError("La campania ya existe en la base de datos.")
 
-        try:
-            new_campania = Campania(value=campania.value)
-            session.add(new_campania)
-            session.commit()
+        new_campania = Campania(value=campania.value)
+        session.add(new_campania)
+        session.commit()
 
-            session.refresh(new_campania)
-        except Exception as err:
-            raise ExistInDbError(
-                status_code=202,
-                detail={
-                    "msg": "Campaña ya existente",
-                    "err": err.args[0],
-                },
-            )
+        session.refresh(new_campania)
 
         return new_campania
+
+
+def delete_by_id(_id: int) -> None:
+    """Funcion que elimina una campaña por su numero de id"""
+    with Session(bind=engine) as session:
+        selected = select(Campania).where(Campania.id == _id)
+        campaign = session.exec(selected).one_or_none()
+        if campaign:
+            session.delete(campaign)
+            session.commit()
