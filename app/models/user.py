@@ -1,9 +1,9 @@
 """ Modelos para la base de datos de usuario """
 from typing import Optional
 from pydantic import BaseModel
-from sqlmodel import Field, SQLModel, UniqueConstraint
+from sqlmodel import Field, SQLModel, UniqueConstraint, Relationship
 
-from app.models._campania import Campania
+from app.models._campania import CampaniaEnum, Campania
 
 
 class User(SQLModel, table=True):
@@ -16,7 +16,8 @@ class User(SQLModel, table=True):
     apellido: str = Field(max_length=25)
     legajo: int = Field(nullable=False)
     password: str = Field(nullable=False, min_length=4, max_length=8)
-    campania: Campania = Field(nullable=False)
+    campania_id: Optional[int] = Field(foreign_key="campania.id")
+    campania: Campania = Relationship(back_populates="users")
 
 
 class ResponseUser(BaseModel):
@@ -26,4 +27,4 @@ class ResponseUser(BaseModel):
     nombre: str = Field(max_length=25)
     apellido: str = Field(max_length=25)
     legajo: int = Field(nullable=False)
-    campania: Campania = Field(nullable=False)
+    campania: CampaniaEnum = Field(nullable=False)
