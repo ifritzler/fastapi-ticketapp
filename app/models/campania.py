@@ -7,6 +7,8 @@ from typing import List, Optional
 
 from sqlmodel import Field, Relationship, SQLModel, UniqueConstraint
 
+USER_MODEL = "User"
+
 
 class CampaniaEnum(str, Enum):
     """Lista de campañas a la que un usuario puede ser asignado"""
@@ -26,4 +28,4 @@ class Campania(SQLModel, table=True):
 
     id: Optional[int] = Field(primary_key=True)
     value: CampaniaEnum = Field(max_length=25)
-    users: List["User"] = Relationship(back_populates="campania")
+    users: List[USER_MODEL] = Relationship(back_populates="campania")
