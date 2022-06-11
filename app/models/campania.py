@@ -6,6 +6,7 @@ from enum import Enum
 from typing import List, Optional
 
 from sqlmodel import Field, Relationship, SQLModel, UniqueConstraint
+from pydantic import validator
 
 USER_MODEL = "User"
 
@@ -29,3 +30,14 @@ class Campania(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True)
     value: CampaniaEnum = Field(max_length=25)
     users: List[USER_MODEL] = Relationship(back_populates="campania")
+
+    @validator("value")
+    def check_if_value_is_in_enum(cls, value):
+        """
+        Valida que el valor asignado a la campaña este dentro de los parametros definidos por la
+        clase CampaniaEnum
+        """
+        enum_values = [campania.value for campania in CampaniaEnum]
+        if value not in enum_values:
+            raise ValueError(f"'{value}' no es un valor correcto")
+        return value
