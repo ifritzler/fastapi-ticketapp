@@ -1,8 +1,8 @@
 """ User api router"""
 from typing import List
-from fastapi import APIRouter
-from app.models.user import ResponseUser
 
+from fastapi import APIRouter
+from app.models.user import UserOut
 from app.repositories import user
 
 router = APIRouter(
@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[ResponseUser])
+@router.get("/", response_model=List[UserOut])
 def get_all_users():
     """Root Endpoint"""
     return user.get_all()

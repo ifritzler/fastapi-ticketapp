@@ -5,8 +5,8 @@ la tabla de la base de datos referida al tipo de gestion que realiza el gestor
 from enum import Enum
 from typing import List, Optional
 
+from pydantic import BaseModel, validator
 from sqlmodel import Field, Relationship, SQLModel, UniqueConstraint
-from pydantic import validator
 
 USER_MODEL = "User"
 
@@ -31,6 +31,12 @@ class Campania(SQLModel, table=True):
     value: CampaniaEnum = Field(max_length=25)
     users: List[USER_MODEL] = Relationship(back_populates="campania")
 
+
+class CampaniaIn(BaseModel):
+    """Modelo de entrada de datos a travez del body"""
+
+    value: CampaniaEnum
+
     @validator("value")
     def check_if_value_is_in_enum(cls, value):
         """
@@ -41,3 +47,10 @@ class Campania(SQLModel, table=True):
         if value not in enum_values:
             raise ValueError(f"'{value}' no es un valor correcto")
         return value
+
+
+class CampaniaOut(BaseModel):
+    """Modelo de vista al usuario de una campania"""
+
+    id: Optional[int] = Field(primary_key=True)
+    value: CampaniaEnum = Field(max_length=25)

@@ -4,10 +4,10 @@
 import uvicorn
 from fastapi import FastAPI
 from sqlmodel import SQLModel
-from app.db.db import engine
 
-from app.endpoints.user import router as user_router
+from app.db.db import engine
 from app.endpoints.campania import router as campaign_router
+from app.endpoints.user import router as user_router
 
 app = FastAPI()
 app.include_router(user_router)
@@ -16,7 +16,7 @@ app.include_router(campaign_router)
 
 def create_db_and_tables():
     """Create all data tables in database"""
-    SQLModel.metadata.create_all(engine)
+    SQLModel.metadata.create_all(engine, checkfirst=True)
     print("Database created")
 
 

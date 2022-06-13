@@ -1,20 +1,28 @@
 """Campaign repository"""
 from typing import List
+
 from sqlmodel import Session, select
-
 from app.db.db import engine
-from app.models.campania import Campania
+from app.models.campania import Campania, CampaniaIn, CampaniaOut
 
 
-def get_all() -> List[Campania]:
-    """Get all campaigns in db"""
+def get_all() -> List[CampaniaOut]:
+    """Listar todas las campañas en la base de datos"""
     with Session(bind=engine) as session:
         selected_campanias = select(Campania)
         response = session.exec(selected_campanias).all()
         return response
 
 
-def create(campania: Campania) -> Campania:
+def get_by_id(_id: int) -> CampaniaOut | None:
+    """Traer una campaña de la db por su id"""
+    with Session(bind=engine) as session:
+        query = select(Campania).where(_id == Campania.id)
+        result = session.exec(query).first()
+        return result
+
+
+def create(campania: CampaniaIn) -> CampaniaOut:
     """Creamos una campaña a partir de su modelo y un id autoincremental en base de datos."""
     with Session(bind=engine) as session:
         # _campania = select(Campania).where(Campania.value == campania.value)
